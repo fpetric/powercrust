@@ -427,8 +427,8 @@ int main(int argc, char **argv) {
 				if( strequals( ext, "off" ) )
 				{
 					// Generate .pts file instead
-					std::ifstream in(filename);
-					std::ofstream out(filename + ".pts");
+					std::ifstream in(filename.c_str());
+					std::ofstream out((filename + ".pts").c_str());
 
 					std::string line;
 					int nv = 0, nf = 0, ne = 0;
@@ -450,8 +450,8 @@ int main(int argc, char **argv) {
 				else if( strequals( ext, "xyz" ) )
 				{
 					// Generate .pts file instead
-					std::ifstream in(filename);
-					std::ofstream out(filename + ".pts");
+					std::ifstream in(filename.c_str());
+					std::ofstream out((filename + ".pts").c_str());
 
 					while(!in.eof())
 					{
