@@ -15,7 +15,7 @@ def triangle_volume(triangle, points):
 	v123 = p1[0]*p2[1]*p3[2]
 	return (1.0/6.0)*(-v321 + v231 + v312 - v132 - v213 + v123)
 
-v, f = pcu.load_mesh_vf("pc_october.off")
+v, f = pcu.load_mesh_vf("pc_x02828_july.off")
 print(len(v))
 print(len(f))
 
@@ -25,7 +25,7 @@ print(len(f))
 # for face in f:
 #     print(len(face))
 
-pcu.save_mesh_vf("powercrust_out_october.ply", v, f)
+pcu.save_mesh_vf("powercrust_out_x02828_july.ply", v, f)
 volume = 0
 # triangle_l = len(mesh.triangles)
 for triangle in f:
@@ -36,24 +36,34 @@ for triangle in f:
 		
 print("Total volume in ml before watertightness", volume*1e6)
 
-v, f = pcu.load_mesh_vf("pc_july.off")
+# v, f = pcu.load_mesh_vf("pc_july.off")
 
-# for face in f:
-#     print(len(face))
+# # for face in f:
+# #     print(len(face))
 
-pcu.save_mesh_vf("powercrust_out_july.ply", v, f)
-volume = 0
-# triangle_l = len(mesh.triangles)
-for triangle in f:
-	volume += triangle_volume(triangle, v)
-	# count += 1
-	# if count % 100 == 0:
-	# 	print(100.0*count/triangle_l, volume)
+# pcu.save_mesh_vf("powercrust_out_july.ply", v, f)
+# volume = 0
+# # triangle_l = len(mesh.triangles)
+# for triangle in f:
+# 	volume += triangle_volume(triangle, v)
+# 	# count += 1
+# 	# if count % 100 == 0:
+# 	# 	print(100.0*count/triangle_l, volume)
 		
-print("Total volume in ml before watertightness", volume*1e6)
+# print("Total volume in ml before watertightness", volume*1e6)
 
 
 # v_watertight, f_watertight = pcu.make_mesh_watertight(v, f, resolution=200000)
+
+# volume = 0
+# # triangle_l = len(mesh.triangles)
+# for triangle in f_watertight:
+# 	volume += triangle_volume(triangle, v_watertight)
+# 	# count += 1
+# 	# if count % 100 == 0:
+# 	# 	print(100.0*count/triangle_l, volume)
+		
+# print("Total volume in ml after watertightness", volume*1e6)
 # pcu.save_mesh_vf("powercrust_out_october_wtight200000.ply", v_watertight, f_watertight)
 
 # # v_n, f_n = pcu.load_mesh_vf("powercrust_out.ply")
@@ -100,30 +110,38 @@ print("Total volume in ml before watertightness", volume*1e6)
 # # triangles = faces[~np.all(faces == 0, axis=1)]
 # # # print(triangles.shape)
 
-# mesh = o3d.geometry.TriangleMesh()
-# mesh.vertices = o3d.utility.Vector3dVector(v_watertight)
-# mesh.triangles = o3d.utility.Vector3iVector(f_watertight)
-# mesh.orient_triangles()
-# volume = 0
-# count = 0
-# triangle_l = len(mesh.triangles)
-# for triangle in mesh.triangles:
-# 	volume += triangle_volume(triangle, mesh.vertices)
-# 	# count += 1
-# 	# if count % 100 == 0:
-# 	# 	print(100.0*count/triangle_l, volume)
+mesh = o3d.geometry.TriangleMesh()
+mesh.vertices = o3d.utility.Vector3dVector(v)
+mesh.triangles = o3d.utility.Vector3iVector(f)
+mesh.orient_triangles()
+volume = 0
+count = 0
+triangle_l = len(mesh.triangles)
+for triangle in mesh.triangles:
+	volume += triangle_volume(triangle, mesh.vertices)
+	# count += 1
+	# if count % 100 == 0:
+	# 	print(100.0*count/triangle_l, volume)
 		
-# print("Total volume in ml", volume*1e6)
+print("Total volume in ml", volume*1e6)
 
-# o3d.visualization.draw_geometries([mesh])
+cloud_1 = o3d.geometry.PointCloud()
+cloud_1.points = o3d.utility.Vector3dVector(v)
+# colors = np.vstack(([[1,0,0] for i in range(len(v_all))], 
+# 	                [[0,1,0] for i in range(len(v_all))], 
+# 	                [[0,0,1] for i in range(len(v_all))]))
+# cloud_1.colors = o3d.utility.Vector3dVector(colors)
+# o3d.visualization.draw_geometries([cloud_1])
 
-# print('edge manifold', mesh.is_edge_manifold(allow_boundary_edges=True))
-# print('edge manifold boundary', mesh.is_edge_manifold(allow_boundary_edges=False))
-# print('vertex manifold', mesh.is_vertex_manifold())
-# print('watertight', mesh.is_watertight())
-# print('orientable', mesh.is_orientable())
-# if mesh.is_watertight():
-# print('volume', mesh.get_volume())
+o3d.visualization.draw_geometries([mesh, cloud_1])
+
+print('edge manifold', mesh.is_edge_manifold(allow_boundary_edges=True))
+print('edge manifold boundary', mesh.is_edge_manifold(allow_boundary_edges=False))
+print('vertex manifold', mesh.is_vertex_manifold())
+print('watertight', mesh.is_watertight())
+print('orientable', mesh.is_orientable())
+if mesh.is_watertight():
+	print('volume', mesh.get_volume())
 
 ## july scan volume Total volume in ml 1154.3356211173393
 ## october scan volume Total volume in ml 1154.2250157653687
