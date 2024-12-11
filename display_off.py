@@ -15,7 +15,7 @@ def triangle_volume(triangle, points):
 	v123 = p1[0]*p2[1]*p3[2]
 	return (1.0/6.0)*(-v321 + v231 + v312 - v132 - v213 + v123)
 
-v, f = pcu.load_mesh_vf("pc_x02828_july.off")
+v, f = pcu.load_mesh_vf("pc_x02745_july.off")
 print(len(v))
 print(len(f))
 
@@ -25,7 +25,7 @@ print(len(f))
 # for face in f:
 #     print(len(face))
 
-pcu.save_mesh_vf("powercrust_out_x02828_july.ply", v, f)
+# pcu.save_mesh_vf("powercrust_out_x02828_july.ply", v, f)
 volume = 0
 # triangle_l = len(mesh.triangles)
 for triangle in f:
